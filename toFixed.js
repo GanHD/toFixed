@@ -1,32 +1,45 @@
 function toFixed(number, roundingDigit){
-  if(isNaN(roundingDigit) || typeof roundingDigit === "String" || roundingDigit === false) roundingDigit =0;
+  //Fixes roundingDigit if something other than a int is passed through
+  if(isNaN(roundingDigit)) roundingDigit =0;
   if(roundingDigit === true) roundingDigit =1;
-  if(roundingDigit % 1 !== 0) roundingDigit = toFixed(roundingDigit);
+  //if roundingDigit is not a whole number recurse.
+  if(roundingDigit % 1 !== 0) roundingDigit = parseInt(toFixed(roundingDigit));
+
 
   fixedNumber = number.toString();
-  var decimalIndex = Math.abs(fixedNumber.indexOf("."));
+  var decimalIndex = fixedNumber.indexOf(".");
+  //if its a whole number w/o a decimal point, default to positive 1
+  if(decimalIndex<0) decimalIndex = 1;
 
+  //Moves the decimal place so that fixedNumber = fixedNumber ^ roundingDigit
   fixedNumber = fixedNumber.replace(".","");
   fixedNumber = fixedNumber.substr(0, decimalIndex+roundingDigit) + "." + fixedNumber.substr(decimalIndex+roundingDigit);
 
-  fixedNumber = parseFloat(fixedNumber).toFixed().replace(".","");
-  //adds 0 back in if its a decimal float value
+  //rounds
+  fixedNumber = Math.round(parseFloat(fixedNumber))
+  //turns fixedNumber into a string without a decimalpoint
+  fixedNumber = fixedNumber.toString().replace(".","")
+  //adds 0 to before the decimalpoint if fixedNumber is a decimal integer
   if(number<=1 && number>=-1 && fixedNumber.length >1){
     fixedNumber = "0"+fixedNumber;
   }
 
-  //if theresany digits after where the decimal should be
+  //Adds back the decimal point if there are digits in the decimal places
   if(fixedNumber.substr(decimalIndex))  {
      var toReturn = fixedNumber.substr(0, decimalIndex) + "." + fixedNumber.substr(decimalIndex);
-     //sting of all the digits that are decimals
+
+     /* ADD ADDITIONAL ZEROS IF NEEDED*/
+     //creates a sting of all the digits that are decimals
      var decimals = fixedNumber.substr(decimalIndex+1);
      //If toFixed roundingDigit is greater than the amount of decimal digits. Add zeros to the end
-     for(var i =0; i <= roundingDigit-decimals.length;i++){
+     for(var i =0; i < roundingDigit - decimals.length - 1;i++){
           toReturn+='0';
         }
       return toReturn;
-  }if(roundingDigit>0){
+  }
+  if(roundingDigit>0){
     fixedNumber+="."
+    //adds additional zeroes if needed
     for(var i =0; i < roundingDigit;i++){
       fixedNumber+='0';
     }
