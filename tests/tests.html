@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <script src="../toFixed.js"></script>
+  <script src="simpletest.js"></script>
+  <script type="text/javascript">
+
+tests({
+  'It should not mutate the passed in number.':function(){
+    var number =1.1;
+    var result = toFixed(number);
+    eq(result !== number,true);
+  },
+  'toFixed should return a string.':function(){
+    var result = toFixed(1.1);
+    eq(typeof result,"string");
+  },
+  'If no roundingDigit is passed through, tofixed should round to the nearest whole number.':function(){
+    var result = toFixed(2.5)
+    eq(result,"3")
+  },
+
+  'it should be able to round numbers to a certain decimal place.':function(){
+    var result = toFixed(2.567,1)
+    eq(result,"2.6")
+  },
+  'it should be able to round down numbers.':function(){
+    var result = toFixed(2.537,1)
+    eq(result,"2.5")
+  },
+  'it should be able to round negative numbers.':function(){
+    var result = toFixed(-2.567,1)
+    eq(result,"-2.6")
+  },
+  "It should be able to round decimal numbers to the nearest Whole number.":function(){
+    eq(toFixed(.5),"1")
+  },
+  "It should be able to round decimal numbers.":function(){
+    eq(toFixed(.5293,2),"0.53")
+  },
+  'It should be able to round edge cases.':function(){
+    //.615 to 2 places, 10.235 to 2 places, 1.0005 to 3 places
+    eq(toFixed(.615,2),"0.62");
+    eq(toFixed(10.235,2),"10.24");
+    eq(toFixed(1.0005,3),"1.001");
+  },
+  'It should be able to add 0s to a number.':function(){
+    eq(toFixed(1,3),"1.000")
+  },
+  'It should be able to add 0s to a number w/decimals.':function(){
+    eq(toFixed(1.2,3),"1.200")
+  },
+
+  'It should throw a typeError if null is passed in as a number to be rounded.':function(){
+    try{
+      toFixed(null,20)
+    }catch(e){
+      var isTypeError = e instanceof TypeError;
+      eq(isTypeError,true);
+    }
+  },
+  'It should throw a typeError if undefined is passed in as a number to be rounded.':function(){
+    try{
+      toFixed(undefined,20)
+    }catch(e){
+      var isTypeError = e instanceof TypeError;
+      eq(isTypeError,true);
+    }
+  },
+  'It should throw a typeError if NaN is passed in as a number to be rounded':function(){
+    try{
+      toFixed(NaN,20)
+    }catch(e){
+      var isTypeError = e instanceof TypeError;
+      eq(isTypeError,true);
+    }
+  },
+  'It should throw a typeError if booleans is passed in as a number to be rounded.':function(){
+    try{
+      toFixed(true,20)
+    }catch(e){
+      var isTypeError = e instanceof TypeError;
+      eq(isTypeError,true);
+    }
+  },
+  'It should throw a typeError if an object is passed in as a number to be rounded':function(){
+    try{
+      toFixed({number:123},20)
+    }catch(e){
+      var isTypeError = e instanceof TypeError;
+      eq(isTypeError,true);
+    }
+  },
+  'It should throw a typeError if a string is passed in as a number to be rounded':function(){
+    try{
+      toFixed('undefined',20)
+    }catch(e){
+      var isTypeError = e instanceof TypeError;
+      eq(isTypeError,true);
+    }
+  },
+
+  'If roundingDigit is true, roundingDigit should be set to 1.':function(){
+    var result = toFixed(2.87,true);
+    eq(result,"2.9")
+  },
+  'If roundingDigit is NaN, roundingDigit should be set to 0.':function(){
+    var result = toFixed(2.87,NaN);
+    eq(result,"3")
+  },
+  'If roundingDigit is a string, roundingDigit should be set to 0.':function(){
+    var result = toFixed(2.87,"");
+    eq(result,"3")
+  },
+  'If roundingDigit is a false, roundingDigit should be set to 0.':function(){
+    var result = toFixed(2.87,false);
+    eq(result,"3")
+  },
+  'If roundingDigit is a float, it should be rounded(normally rounded down but im doing recursion for fun).':function(){
+    var result = toFixed(2.87,0.9);
+    eq(result,"2.9")
+  },
+})
+  </script>
+</body>
+</html>
