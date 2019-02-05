@@ -20,7 +20,7 @@ tests({
     var result = toFixed(1.1);
     eq(typeof result,"string");
   },
-  'If no roundingDigit is passed through, tofixed should round to the nearest whole number.':function(){
+  'If no precision is passed through, tofixed should round to the nearest whole number.':function(){
     var result = toFixed(2.5)
     eq(result,"3")
   },
@@ -105,32 +105,41 @@ tests({
     }
   },
 
-  'If roundingDigit is true, roundingDigit should be set to 1.':function(){
+  'If precision is true, precision should be set to 1.':function(){
     var result = toFixed(2.87,true);
     eq(result,"2.9")
   },
-  'If roundingDigit is NaN, roundingDigit should be set to 0.':function(){
+  'If precision is NaN, precision should be set to 0.':function(){
     var result = toFixed(2.87,NaN);
     eq(result,"3")
   },
-  'If roundingDigit is a string, roundingDigit should be set to 0.':function(){
+  'If precision is a string, precision should be set to 0.':function(){
     var result = toFixed(2.87,"");
     eq(result,"3")
   },
-  'If roundingDigit is a false, roundingDigit should be set to 0.':function(){
+  'If precision is a false, precision should be set to 0.':function(){
     var result = toFixed(2.87,false);
     eq(result,"3")
   },
-  'If roundingDigit is a float, it should be rounded to an integer(recursion test).':function(){
+  'If precision is a float, it should be rounded to an integer(recursion test).':function(){
     var result = toFixed(2.87,0.9);
     eq(result,"2.9")
   },
-  ' It should round -0.0545 to -0.05': function () {
+  ' It should be able to round negative fractions': function () {
       eq(toFixed(-0.0545, 2), '-0.05');
     },
-    ' It should round -0.0545 to -0.055': function () {
-        eq(toFixed(-0.0545, 3), '-0.055');
-      },
+    'It should throw a RangeError if precision is not a value within 0 and 20.': function () {
+      try {
+        toFixed(12345.6789, -1);
+      } catch (error) {
+        eq(error instanceof RangeError, true);
+      }
+      try {
+        toFixed(12345.6789, 21);
+      } catch (error) {
+        eq(error instanceof RangeError, true);
+      }
+  },
 })
   </script>
 </body>
