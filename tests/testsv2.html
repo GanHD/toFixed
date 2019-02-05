@@ -6,7 +6,7 @@
 </head>
 
 <body>
-  <script src="../toFixed.js"></script>
+  <script src="../toFixedV2.js"></script>
   <script src="simpletest.js"></script>
   <script type="text/javascript">
 
@@ -121,14 +121,14 @@ tests({
     var result = toFixed(2.87,false);
     eq(result,"3")
   },
-  'If roundingDigit is a float, it should be rounded(normally rounded down but im doing recursion for fun).':function(){
+  'If roundingDigit is a float, it should be rounded to an integer(recursion test).':function(){
     var result = toFixed(2.87,0.9);
     eq(result,"2.9")
   },
   ' It should round -0.0545 to -0.05': function () {
       eq(toFixed(-0.0545, 2), '-0.05');
     },
-    ' It should round -0.0545 to -0.050': function () {
+    ' It should round -0.0545 to -0.055': function () {
         eq(toFixed(-0.0545, 3), '-0.055');
       },
 })

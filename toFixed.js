@@ -7,8 +7,13 @@ function toFixed(number, roundingDigit){
 
 
   fixedNumber = number.toString();
+  if(fixedNumber.match("-")){
+    fixedNumber =fixedNumber.replace("-","");
+    var isNegative = true;
+  }
+
   var decimalIndex = fixedNumber.indexOf(".");
-  //if its a whole number w/o a decimal point, default to positive 1
+  //if theres no decimal point, default to positive 1
   if(decimalIndex<0) decimalIndex = 1;
 
   //Moves the decimal place so that fixedNumber = fixedNumber ^ roundingDigit
@@ -18,7 +23,7 @@ function toFixed(number, roundingDigit){
   //rounds
   fixedNumber = Math.round(parseFloat(fixedNumber))
   //turns fixedNumber into a string without a decimalpoint
-  fixedNumber = fixedNumber.toString().replace(".","")
+  fixedNumber = fixedNumber.toString();
   //adds 0 to before the decimalpoint if fixedNumber is a decimal integer
   if(number<=1 && number>=-1 && fixedNumber.length >1){
     fixedNumber = "0"+fixedNumber;
@@ -35,6 +40,7 @@ function toFixed(number, roundingDigit){
      for(var i =0; i < roundingDigit - decimals.length - 1;i++){
           toReturn+='0';
         }
+      if(isNegative === true) return "-"+toReturn;
       return toReturn;
   }
   if(roundingDigit>0){
@@ -44,5 +50,6 @@ function toFixed(number, roundingDigit){
       fixedNumber+='0';
     }
   }
+  if(isNegative === true) return "-"+fixedNumber;
   return fixedNumber
 }
